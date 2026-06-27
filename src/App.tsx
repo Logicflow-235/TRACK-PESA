@@ -1,6 +1,7 @@
 import Balance from "./components/Balance";
 import AddTransaction from "./components/AddTransaction";
 import TransactionList from "./components/TransactionList";
+import Summary from "./components/Summary";
 function App(){
   return(
     <div>
@@ -8,6 +9,7 @@ function App(){
       <Balance/>
       <AddTransaction/>
       <TransactionList/>
+      <Summary/>
     </div>
   )
 }
