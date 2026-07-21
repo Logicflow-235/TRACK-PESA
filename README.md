@@ -1,32 +1,72 @@
-# React + TypeScript + Vite
+# 💰 Track Pesa
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A personal finance tracking web app built for the Kenyan market. Track your income and expenses, monitor your balance, and gain clarity on your spending habits.
 
-Currently, two official plugins are available:
+## 🌐 Live Demo
+[Track Pesa](https://track-pesa.vercel.app/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## ✨ Features
 
-## React Compiler
+- Add and delete income & expense transactions
+- Real-time balance calculation
+- Income vs expense summary
+- Filter transactions by category
+- Clean, modern dark UI
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Tech Stack
 
-## Expanding the Oxlint configuration
+- **React** — UI library
+- **TypeScript** — type-safe codebase
+- **Redux Toolkit** — global state management
+- **Tailwind CSS** — styling
+- **Vite** — build tool
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+## 📦 Getting Started
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+git clone https://github.com/YOUR_USERNAME/track-pesa.git
+cd track-pesa
+npm install
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## 📁 Project Structure
+src/
+
+├── app/
+
+│   ├── store.ts         # Redux store
+
+│   └── hooks.ts         # Typed Redux hooks
+
+├── features/
+
+│   └── transactions/
+
+│       └── transactionSlice.ts
+
+├── components/
+
+│   ├── Balance.tsx
+
+│   ├── Summary.tsx
+
+│   ├── AddTransaction.tsx
+
+│   └── TransactionList.tsx
+
+└── types/
+
+└── index.ts
+
+## 🔮 Roadmap
+
+- [ ] M-Pesa transaction import
+- [ ] Backend integration with Node.js & MongoDB
+- [ ] Monthly spending reports
+- [ ] Data export to PDF
+
+## 👩‍💻 Author
+
+**Theuri Linet**
+[GitHub](https://github.com/Logicflow-235) • [Portfolio](https://my-portfolio-tau-ten-18.vercel.app)
