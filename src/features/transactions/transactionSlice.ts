@@ -5,7 +5,7 @@ const initialState: TransactionState ={
     transactions: []
 }
 const transactionSlice =createSlice({
-    name: "transactions",
+    name: "transaction",
     initialState,
     reducers: {
         addTransaction: (state, action: PayloadAction <Transaction>)=>{

@@ -2,7 +2,7 @@ import { useAppSelector } from "../app/hooks"
 
 export default function Summary() {
   const transactions = useAppSelector(
-    (state) => state.transactions.transactions
+    (state) => state.transaction.transactions
   )
 
   const totalIncome = transactions

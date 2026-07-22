@@ -3,7 +3,7 @@ const bcrypt =require('bcrypt');
 const User =require('./User');
 const mongoose =require('mongoose');
 const express =require('express');
-const cors =required('cors');
+const cors =require('cors');
 const app = express();
 const authMiddleware =require('./authmiddleware');
 

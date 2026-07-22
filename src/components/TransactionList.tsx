@@ -6,7 +6,7 @@ import type { Category } from "../types"
 export default function TransactionList() {
   const dispatch = useAppDispatch()
   const transactions = useAppSelector(
-    (state) => state.transactions.transactions
+    (state) => state.transaction.transactions
   )
 
   const [selectedCategory, setSelectedCategory] = useState<Category | "all">("all")
