@@ -3,7 +3,7 @@ import AddTransaction from "./components/AddTransaction"
 import TransactionList from "./components/TransactionList"
 import Summary from "./components/Summary"
 import Register from './components/Register'
-
+import Login from "./components/login"
 function App() {
   return (
     <div className="min-h-screen bg-gray-950 text-white">
@@ -12,6 +12,7 @@ function App() {
           💰 Track Pesa
         </h1>
         <Register />
+        <Login/>
         <Balance />
         <Summary />
         <AddTransaction />
