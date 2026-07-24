@@ -1,36 +1,37 @@
 import { useState } from "react"
-import { useAppDispatch } from "../app/hooks"
-import { addTransaction } from "../features/transactions/transactionSlice"
+import { useAddTransactionMutation } from "../features/transactions/transactionApiSlice"
 import type { Category, TransactionType } from "../types"
 
 export default function AddTransaction() {
-  const dispatch = useAppDispatch()
-
+const [addTransaction, {isLoading}] = useAddTransactionMutation()
   const [title, setTitle] = useState("")
   const [amount, setAmount] = useState("")
   const [category, setCategory] = useState<Category>("food")
   const [date, setDate] = useState("")
   const [type, setType] = useState<TransactionType>("income")
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!title || !amount || !date) return
 
     const newTransaction = {
-      id: Date.now().toString(),
       title,
       amount: Number(amount),
       category,
       date,
       type
     }
-
-    dispatch(addTransaction(newTransaction))
+   try{
+    await addTransaction(newTransaction).unwrap()
     setTitle("")
     setAmount("")
     setCategory("food")
     setDate("")
     setType("income")
+   }
+   catch(err){
+    console.error("failed to add transaction", err)
+   }
   }
 
   return (
@@ -98,9 +99,10 @@ export default function AddTransaction() {
 
         <button
           type="submit"
+          disabled= {isLoading}
           className="bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-xl transition-colors"
         >
-          Add Transaction
+          {isLoading ? "Adding..." :"add Transaction"}
         </button>
       </div>
     </form>

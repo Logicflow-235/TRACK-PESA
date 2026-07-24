@@ -1,19 +1,32 @@
 import { useState } from "react"
-import { useAppSelector, useAppDispatch } from "../app/hooks"
-import { deleteTransaction } from "../features/transactions/transactionSlice"
+import { useGetTransactionsQuery, useDeleteTransactionMutation } from "../features/transactions/transactionApiSlice"
 import type { Category } from "../types"
 
 export default function TransactionList() {
-  const dispatch = useAppDispatch()
-  const transactions = useAppSelector(
-    (state) => state.transaction.transactions
-  )
+  const { data: transactions = [], isLoading, error } = useGetTransactionsQuery(undefined)
+  const [deleteTransaction] = useDeleteTransactionMutation()
 
   const [selectedCategory, setSelectedCategory] = useState<Category | "all">("all")
 
   const filteredTransactions = selectedCategory === "all"
     ? transactions
-    : transactions.filter((t) => t.category === selectedCategory)
+    : transactions.filter((t: any) => t.category === selectedCategory)
+
+  if (isLoading) {
+    return (
+      <div className="bg-gray-900 rounded-2xl p-6 text-center">
+        <p className="text-gray-400">Loading transactions...</p>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="bg-gray-900 rounded-2xl p-6 text-center">
+        <p className="text-red-400">Failed to load transactions.</p>
+      </div>
+    )
+  }
 
   if (transactions.length === 0) {
     return (
@@ -43,21 +56,21 @@ export default function TransactionList() {
       </div>
 
       <div className="flex flex-col gap-3">
-        {filteredTransactions.map((t) => (
+        {filteredTransactions.map((t: any) => (
           <div
-            key={t.id}
+            key={t._id}
             className="flex items-center justify-between bg-gray-800 rounded-xl px-4 py-3"
           >
             <div>
               <p className="text-white font-medium">{t.title}</p>
-              <p className="text-gray-400 text-sm">{t.category} • {t.date}</p>
+              <p className="text-gray-400 text-sm">{t.category}</p>
             </div>
             <div className="flex items-center gap-3">
               <p className={`font-bold ${t.type === "income" ? "text-green-400" : "text-red-400"}`}>
                 {t.type === "income" ? "+" : "-"} KES {t.amount.toLocaleString()}
               </p>
               <button
-                onClick={() => dispatch(deleteTransaction(t.id))}
+                onClick={() => deleteTransaction(t._id)}
                 className="text-gray-500 hover:text-red-400 transition-colors text-sm"
               >
                 🗑️
