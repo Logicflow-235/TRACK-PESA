@@ -13,5 +13,5 @@ export const apiSlice= createApi({
         } 
     }),
     tagTypes: ['Transaction'],
-    endpoints: (builder)=>({}),
+    endpoints: (_builder)=>({}),
 });
