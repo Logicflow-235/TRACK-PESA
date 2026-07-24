@@ -37,8 +37,11 @@ app.get('/transactions', authMiddleware, async (req, res)=>{
 app.post('/transaction', authMiddleware, async (req, res)=>{
     try{
         const newTransaction=new Transaction({
+     title:req.body.title,
     amount:req.body.amount,
     category:req.body.category,
+    type:req.body.type,
+    date:req.body.date,
     user:req.user.id
    });
      const savedTransaction = await newTransaction.save();

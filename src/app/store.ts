@@ -1,10 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import transactionReducer from "../features/transactions/transactionApiSlice"
 import { apiSlice } from "../features/api/apiSlice";
 import authReducer from "../features/auth/authSlice"
 export const store = configureStore({
     reducer:{
-        transaction : transactionReducer,
         auth:authReducer,
         [apiSlice.reducerPath]:apiSlice.reducer,
     },

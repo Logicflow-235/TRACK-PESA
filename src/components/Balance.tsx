@@ -1,9 +1,20 @@
-import { useAppSelector } from "../app/hooks";
+import { useGetTransactionsQuery } from "../features/transactions/transactionApiSlice";
+import type { Transaction } from "../types/index";
 export default function Balance (){
-    const transactions = useAppSelector(
-        (state)=>state.transaction.transactions
-    )
-    const balance  = transactions.reduce((total, t)=>{
+    const {data:transactions =[], isLoading, error}=useGetTransactionsQuery(undefined);
+    if(isLoading){
+      return(
+       <div className="bg-gray-900 rounded-2xl p-6 text-center">
+        <p className="text-gray-400">Loading transactions...</p>
+      </div>)
+    }
+     if(error){
+      return(
+       <div className="bg-gray-900 rounded-2xl p-6 text-center">
+        <p className="text-red-500">Loading transactions...</p>
+      </div>)
+    }
+    const balance  = transactions.reduce((total:any, t:Transaction)=>{
         return t.type === "income"? total +t.amount :total -t.amount
     }, 0)
     return(
