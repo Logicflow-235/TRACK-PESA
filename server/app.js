@@ -70,7 +70,7 @@ app.put('/transaction/:id', authMiddleware, async (req, res)=>{
           category:req.body.category},{new: true}
         );
         if(!updatedTransaction){
-            return res.status(404).send("Transaction not yefound");
+            return res.status(404).send("Transaction not found");
         }
         res.json(updatedTransaction);
     }
@@ -110,8 +110,7 @@ app.post('/login',  async (req,res)=>{
     try{
         const {username, password} =req.body;
         const user = await User.findOne({username});
-        if(!user){return 
-            res.status(401).send('Invalid username or password');
+        if(!user){return res.status(401).send('Invalid username or password');
         }
         const isMatch =await bcrypt.compare(password, user.password);
         if (!isMatch){
