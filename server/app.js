@@ -4,6 +4,7 @@ const User =require('./User');
 const mongoose =require('mongoose');
 const express =require('express');
 const cors =require('cors');
+const PORT =process.env.PORT ||5000; 
 const app = express();
 const authMiddleware =require('./authmiddleware');
 
@@ -126,6 +127,6 @@ app.post('/login',  async (req,res)=>{
     catch (err){
     res.status(500).json({error: err.message});}
 });
-app.listen(5000, ()=>{
-    console.log('server running on port')
+app.listen(PORT, ()=>{
+    console.log(`server running on port ${PORT}`)
 });
