@@ -21,13 +21,13 @@ export default function Login() {
 
     return (
         <form onSubmit={handleSubmit}>
-            <input className="text-red-500"
+            <input className="text-black"
                 type="text"
                 placeholder="Username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
             />
-            <input className="text-red-500"
+            <input className="text-black"
                 type="password"
                 placeholder="Password"
                 value={password}

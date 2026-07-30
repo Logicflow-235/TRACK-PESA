@@ -22,13 +22,13 @@ export default function Register(){
     return(
         <form onSubmit={handleSubmit}>
             <h2>Register</h2>
-      <input className="text-red-500"
+      <input className="text-black"
         type="text"
         placeholder="Username"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
       />
-      <input className="text-red-500"
+      <input className="text-black"
         type="password"
         placeholder="Password"
         value={password}
