@@ -1,3 +1,4 @@
+import { useState } from "react"
 import Balance from "./components/Balance"
 import AddTransaction from "./components/AddTransaction"
 import TransactionList from "./components/TransactionList"
@@ -7,11 +8,16 @@ import Login from "./components/login"
 import { logout } from "./features/auth/authSlice"
 import { useAppSelector, useAppDispatch } from "./app/hooks"
 
+type AuthView = "landing" | "login" | "register"
+
 export default function App() {
   const dispatch = useAppDispatch();
   const token = useAppSelector((state) => state.auth.token);
+  const [authView, setAuthView] = useState<AuthView>("landing");
+
   const handleLogout = () => {
     dispatch(logout())
+    setAuthView("landing")
   }
 
   return (
@@ -34,10 +40,45 @@ export default function App() {
             <AddTransaction />
             <TransactionList />
           </>
-        ) : (
+        ) : authView === "landing" ? (
+          <div className="bg-gray-900 rounded-2xl p-8 text-center">
+            <p className="text-gray-400 mb-6">
+              Track your income and expenses, all in one place.
+            </p>
+            <div className="flex flex-col gap-3">
+              <button
+                onClick={() => setAuthView("login")}
+                className="bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-xl transition-colors"
+              >
+                Login
+              </button>
+              <button
+                onClick={() => setAuthView("register")}
+                className="bg-gray-800 hover:bg-gray-700 text-white font-bold py-3 rounded-xl transition-colors"
+              >
+                Create Account
+              </button>
+            </div>
+          </div>
+        ) : authView === "login" ? (
           <>
             <Login />
+            <button
+              onClick={() => setAuthView("landing")}
+              className="text-gray-400 text-sm"
+            >
+              ← Back
+            </button>
+          </>
+        ) : (
+          <>
             <Register />
+            <button
+              onClick={() => setAuthView("landing")}
+              className="text-gray-400 text-sm"
+            >
+              ← Back
+            </button>
           </>
         )}
       </div>
