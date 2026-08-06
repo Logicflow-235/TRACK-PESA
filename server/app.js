@@ -7,7 +7,7 @@ const cors =require('cors');
 const PORT =process.env.PORT ||5000; 
 const app = express();
 const authMiddleware =require('./authmiddleware');
-
+const Budget = require('./Budget');
 mongoose.connect(process.env.MONGO_URI)
 .then(()=>console.log('MongoDB connected'))
 .catch((err)=>console.log('MongoDB connection error:', err))
@@ -52,6 +52,27 @@ app.post('/transaction', authMiddleware, async (req, res)=>{
  res.status(500).json({error: err.message})
     }
 });
+app.post('/budget', authMiddleware, async (req, res)=>{
+    try{
+      const existing = await Budget.findOne({user:req.user.id})
+      if(existing){
+        return res.status(400).send('Budget Already exists')
+      }
+   const total= req.body.budgets.reduce((sum, b)=> sum+ b.percentage, 0)
+  if (total!== 100)
+  {return res.status(400).send("Budgets should add up to 100")}
+  const newBudget = new Budget ({
+    user:req.user.id,
+    budgets: req.body.budgets
+  });
+ 
+  const savedBudget =await newBudget.save();
+  res.status(201).json(savedBudget)
+    }
+    catch(err){
+        res.status(500).json({error:err.message})
+    }
+})
 app.get('/transaction/:id', authMiddleware, async (req, res)=>
 {try{
      const transaction= await Transaction.findOne({_id:req.params.id, user:req.user.id});

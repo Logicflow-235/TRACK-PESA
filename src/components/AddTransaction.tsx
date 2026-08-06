@@ -83,6 +83,8 @@ const [addTransaction, {isLoading}] = useAddTransactionMutation()
           <option value="transport">Transport</option>
           <option value="rent">Rent</option>
           <option value="entertainment">Entertainment</option>
+          <option value="savings">Savings</option>
+          <option value="investment">Investment</option>
           <option value="other">Other</option>
         </select>
   </div>

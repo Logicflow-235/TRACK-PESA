@@ -8,7 +8,7 @@ export default function Summary() {
 
   const totalExpense = transactions
     .filter((t:Transaction) => t.type === "expense")
-    .reduce((total:any, t:Transaction)=> total + t.amount, 0)
+    .reduce((total:any, t:Transaction)=> total - t.amount, 0)
 
     if(isLoading){
       return(
