@@ -73,6 +73,24 @@ app.post('/budget', authMiddleware, async (req, res)=>{
         res.status(500).json({error:err.message})
     }
 })
+app.get('/budget', authMiddleware, async (req, res)=>{
+try{
+    const budgets= await Budget.find({user: req.user.id})
+    res.json(budget)
+}
+catch(err){res.status(500).json({error:err.message})}
+})
+app.put('/budget/:id', authMiddleware, async (req, res)=>{
+    try{
+   const updatedBudget=await Budget.findOneAndUpdate({_id:req.params.id, user:req.user.id},
+    {percentage:req.body.percentage, category:req.body.category}, {new:true})
+   if(!updatedBudget){return res.status(404).send("Budget not found")}
+   res.json(updatedBudget)
+    }
+catch(err){
+    res.status(500).json({error: err.message});
+}
+})
 app.get('/transaction/:id', authMiddleware, async (req, res)=>
 {try{
      const transaction= await Transaction.findOne({_id:req.params.id, user:req.user.id});

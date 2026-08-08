@@ -38,7 +38,7 @@ const [addTransaction, {isLoading}] = useAddTransactionMutation()
     <form onSubmit={handleSubmit} className="bg-gray-900 rounded-2xl p-6 mb-4">
       <h2 className="text-white text-lg font-bold mb-4">Add Transaction</h2>
 
-      <div className="flex flex-col gap-3">
+      <div className="grid grid-cols-3 gap-6">
        <div className="flex flex-col gap-1">
   <label className="text-gray-400 text-sm">Title</label>
   <input
