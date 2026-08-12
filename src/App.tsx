@@ -7,13 +7,35 @@ import Register from './components/Register'
 import Login from "./components/login"
 import { logout } from "./features/auth/authSlice"
 import { useAppSelector, useAppDispatch } from "./app/hooks"
-
+import BudgetRing  from "./components/BudgetRing"
+import { useGetTransactionsQuery } from "./features/transactions/transactionApiSlice"
+import type { Transaction } from "./types/index";
 type AuthView = "landing" | "login" | "register"
 
 export default function App() {
   const dispatch = useAppDispatch();
   const token = useAppSelector((state) => state.auth.token);
   const [authView, setAuthView] = useState<AuthView>("landing");
+  const { data: transactions = [] } = useGetTransactionsQuery(undefined);
+
+  // TODO: replace with real saved percentages (Redux slice or backend)
+  const [budgetCategories] = useState([
+    { name: "Food", percentage: 30 },
+    { name: "Transport", percentage: 20 },
+  ]);
+
+  const totalIncome = transactions
+    .filter((t: Transaction) => t.type === "income")
+    .reduce((sum:any, t: Transaction) => sum + t.amount, 0);
+
+  const totalBudget = budgetCategories.reduce(
+    (sum, bc) => sum + totalIncome * (bc.percentage / 100),
+    0
+  );
+
+  const totalSpent = transactions
+    .filter((t: Transaction) => t.type === "expense")
+    .reduce((sum:any, t: Transaction) => sum + t.amount, 0);
 
   const handleLogout = () => {
     dispatch(logout())
@@ -37,7 +59,10 @@ export default function App() {
           <>
             <Balance />
             <Summary />
-            <AddTransaction />
+            <div className="flex flex-col md:flex-row items-center gap-4 mb-6">
+              <AddTransaction />
+              <BudgetRing budget={totalBudget} spent={totalSpent} />
+            </div>
             <TransactionList />
           </>
         ) : authView === "landing" ? (
