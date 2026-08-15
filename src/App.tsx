@@ -7,9 +7,11 @@ import Register from './components/Register'
 import Login from "./components/login"
 import { logout } from "./features/auth/authSlice"
 import { useAppSelector, useAppDispatch } from "./app/hooks"
-import BudgetRing  from "./components/BudgetRing"
+import BudgetRing from "./components/BudgetRing"
 import { useGetTransactionsQuery } from "./features/transactions/transactionApiSlice"
+import { useGetBudgetQuery } from "./features/budget/budgetApiSlice"
 import type { Transaction } from "./types/index";
+import AddBudget from "./components/AddBudget";
 type AuthView = "landing" | "login" | "register"
 
 export default function App() {
@@ -17,25 +19,22 @@ export default function App() {
   const token = useAppSelector((state) => state.auth.token);
   const [authView, setAuthView] = useState<AuthView>("landing");
   const { data: transactions = [] } = useGetTransactionsQuery(undefined);
+  const { data: budgets } = useGetBudgetQuery(undefined, { skip: !token });
 
-  // TODO: replace with real saved percentages (Redux slice or backend)
-  const [budgetCategories] = useState([
-    { name: "Food", percentage: 30 },
-    { name: "Transport", percentage: 20 },
-  ]);
+  const budgetCategories = budgets?.[0]?.budgets ?? [];
 
   const totalIncome = transactions
     .filter((t: Transaction) => t.type === "income")
-    .reduce((sum:any, t: Transaction) => sum + t.amount, 0);
+    .reduce((sum: number, t: Transaction) => sum + t.amount, 0);
 
   const totalBudget = budgetCategories.reduce(
-    (sum, bc) => sum + totalIncome * (bc.percentage / 100),
+    (sum:any, bc:any) => sum + totalIncome * (bc.percentage / 100),
     0
   );
 
   const totalSpent = transactions
     .filter((t: Transaction) => t.type === "expense")
-    .reduce((sum:any, t: Transaction) => sum + t.amount, 0);
+    .reduce((sum: number, t: Transaction) => sum + t.amount, 0);
 
   const handleLogout = () => {
     dispatch(logout())
@@ -63,6 +62,7 @@ export default function App() {
               <AddTransaction />
               <BudgetRing budget={totalBudget} spent={totalSpent} />
             </div>
+            <AddBudget/>
             <TransactionList />
           </>
         ) : authView === "landing" ? (

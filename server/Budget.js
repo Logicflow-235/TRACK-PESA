@@ -8,7 +8,7 @@ const budgetSchema = new mongoose.Schema({
     budgets:[{
         category:{
         type:String,
-        enum:['food', 'entertainment', 'savings', 'rent', 'transport', 'investment', 'other'],
+        enum:['food', 'entertainment', 'savings', 'rent', 'transport', 'investment', 'health', 'other'],
         required:true
     },
     percentage:{

@@ -21,12 +21,15 @@ export const budgetApiSlice =apiSlice.injectEndpoints({
             }),invalidatesTags:['Budget']
         }),
         editBudget: builder.mutation({
-            query: ()=>({
-                url:'/budget',
+            query: ({id, ...body})=>({
+                url:`/budget/${id}`,
                 method: 'PUT',
+                body
             }),
             invalidatesTags:['Budget']
         })
     })
 });
-export const{useEditBudgetMutation, useAddBudgetMutation, useGetBudgetQuery, useDeleteBudgetMutation}=budgetApiSlice
+export const{useEditBudgetMutation,
+     useAddBudgetMutation, useGetBudgetQuery,
+      useDeleteBudgetMutation}=budgetApiSlice

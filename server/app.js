@@ -76,7 +76,7 @@ app.post('/budget', authMiddleware, async (req, res)=>{
 app.get('/budget', authMiddleware, async (req, res)=>{
 try{
     const budgets= await Budget.find({user: req.user.id})
-    res.json(budget)
+    res.json(budgets)
 }
 catch(err){res.status(500).json({error:err.message})}
 })
