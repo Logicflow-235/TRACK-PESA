@@ -75,6 +75,7 @@ app.post('/budget', authMiddleware, async (req, res)=>{
 })
 app.get('/budget', authMiddleware, async (req, res)=>{
 try{
+    console.log('BUDGET ROUTE HIT - v2'); // ← temporary marker so we can confirm this deploy went live
     const budgets= await Budget.find({user: req.user.id})
     res.json(budgets)
 }
