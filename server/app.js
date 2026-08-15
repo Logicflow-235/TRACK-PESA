@@ -91,6 +91,15 @@ catch(err){
     res.status(500).json({error: err.message});
 }
 })
+app.delete('/budget', authMiddleware, async (req, res)=>{
+    try{ 
+        const deleteBudget=await User.findOneAndDelete({user:req.user.id})
+        res.status(200).send("Budgetdeleted")
+    }
+    catch(err){
+    res.status(500).json({error: err.message});
+}
+})
 app.get('/transaction/:id', authMiddleware, async (req, res)=>
 {try{
      const transaction= await Transaction.findOne({_id:req.params.id, user:req.user.id});
