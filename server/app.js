@@ -8,6 +8,8 @@ const PORT =process.env.PORT ||5000;
 const app = express();
 const authMiddleware =require('./authmiddleware');
 const Budget = require('./Budget');
+const validate = require('./validate');
+const{transactionSchema,addBudgetSchema, loginSchema, editBudgetSchema, registerSchema } = require('./schemas');
 mongoose.connect(process.env.MONGO_URI)
 .then(()=>console.log('MongoDB connected'))
 .catch((err)=>console.log('MongoDB connection error:', err))
@@ -35,7 +37,7 @@ app.get('/transactions', authMiddleware, async (req, res)=>{
     }
 });
 
-app.post('/transaction', authMiddleware, async (req, res)=>{
+app.post('/transaction', authMiddleware, validate(transactionSchema), async (req, res)=>{
     try{
         const newTransaction=new Transaction({
      title:req.body.title,
@@ -52,15 +54,9 @@ app.post('/transaction', authMiddleware, async (req, res)=>{
  res.status(500).json({error: err.message})
     }
 });
-app.post('/budget', authMiddleware, async (req, res)=>{
+app.post('/budget', authMiddleware, validate(addBudgetSchema), async (req, res)=>{
     try{
-      const existing = await Budget.findOne({user:req.user.id})
-      if(existing){
-        return res.status(400).send('Budget Already exists')
-      }
-   const total= req.body.budgets.reduce((sum, b)=> sum+ b.percentage, 0)
-  if (total!== 100)
-  {return res.status(400).send("Budgets should add up to 100")}
+     
   const newBudget = new Budget ({
     user:req.user.id,
     budgets: req.body.budgets
@@ -75,13 +71,12 @@ app.post('/budget', authMiddleware, async (req, res)=>{
 })
 app.get('/budget', authMiddleware, async (req, res)=>{
 try{
-    console.log('BUDGET ROUTE HIT - v2'); // ← temporary marker so we can confirm this deploy went live
     const budgets= await Budget.find({user: req.user.id})
     res.json(budgets)
 }
 catch(err){res.status(500).json({error:err.message})}
 })
-app.put('/budget/:id', authMiddleware, async (req, res)=>{
+app.put('/budget/:id', authMiddleware, validate(editBudgetSchema), async (req, res)=>{
     try{
    const updatedBudget=await Budget.findOneAndUpdate({'budgets._id':req.params.id, user:req.user.id},
     {$set: {'budgets.$.category':req.body.category, 'budgets.$.percentage':req.body.percentage}},
@@ -143,7 +138,7 @@ app.delete('/transaction/:id',  authMiddleware,async (req, res)=>{
     catch (err){
     res.status(500).json({error: err.message});}
 });
-app.post ('/register', async (req, res)=>{
+app.post ('/register', validate(registerSchema), async (req, res)=>{
     try{
         const{ username, password} =req.body;
         const hashedPassword =await bcrypt.hash(password, 10);
@@ -158,7 +153,7 @@ app.post ('/register', async (req, res)=>{
     res.status(500).json({error: err.message});}
 });
 const jwt=require('jsonwebtoken');
-app.post('/login',  async (req,res)=>{
+app.post('/login', validate(loginSchema), async (req,res)=>{
     try{
         const {username, password} =req.body;
         const user = await User.findOne({username});
