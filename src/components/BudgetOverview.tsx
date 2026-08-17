@@ -33,18 +33,18 @@ export default function BudgetOverview({ budgetCategories, transactions, totalIn
   };
 
   if (isEditing) {
-    return (
-      <div className="space-y-3">
-        <EditBudget />
-        <button
-          onClick={() => setIsEditing(false)}
-          className="text-gray-400 text-sm hover:text-gray-300"
-        >
-          ← Done editing
-        </button>
-      </div>
-    );
-  }
+  return (
+    <div className="space-y-3">
+      <EditBudget onSaved={() => setIsEditing(false)} />
+      <button
+        onClick={() => setIsEditing(false)}
+        className="text-gray-400 text-sm hover:text-gray-300"
+      >
+        ← Done editing
+      </button>
+    </div>
+  );
+}
 
   return (
     <div className="bg-gray-900 p-6 rounded-xl space-y-4">

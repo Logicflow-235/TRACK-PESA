@@ -2,11 +2,15 @@ import { useState, useEffect } from 'react';
 import { useGetBudgetQuery, useEditBudgetMutation } from '../features/budget/budgetApiSlice';
 import type { Category, BudgetCategory } from '../types/index';
 
-export default function EditBudget() {
+type Props = {
+  onSaved?: () => void;
+};
+
+export default function EditBudget({ onSaved }: Props) {
   const { data: budgets, isLoading: isFetching } = useGetBudgetQuery(undefined);
   const [editBudget, { isLoading: isSaving }] = useEditBudgetMutation();
 
-  const existing = budgets?.[0]; // one budget doc per user
+  const existing = budgets?.[0];
   const [rows, setRows] = useState<BudgetCategory[]>([]);
 
   useEffect(() => {
@@ -34,6 +38,11 @@ export default function EditBudget() {
       );
     });
 
+    if (changedRows.length === 0) {
+      onSaved?.(); // nothing changed, but still leave edit mode
+      return;
+    }
+
     try {
       await Promise.all(
         changedRows.map((row) =>
@@ -44,9 +53,9 @@ export default function EditBudget() {
           }).unwrap()
         )
       );
+      onSaved?.(); // ← only fires if every save succeeded
     } catch {
-      // individual failures surface via mutation error state per call;
-      // Promise.all rejects on first failure, leaving some rows saved and some not
+      // a row failed — stay on the form so the user can retry, don't call onSaved
     }
   };
 
