@@ -7,11 +7,11 @@ import Register from './components/Register'
 import Login from "./components/login"
 import { logout } from "./features/auth/authSlice"
 import { useAppSelector, useAppDispatch } from "./app/hooks"
-import BudgetRing from "./components/BudgetRing"
 import { useGetTransactionsQuery } from "./features/transactions/transactionApiSlice"
 import { useGetBudgetQuery } from "./features/budget/budgetApiSlice"
 import type { Transaction } from "./types/index";
 import AddBudget from "./components/AddBudget";
+import BudgetOverview from "./components/BudgetOverview"
 type AuthView = "landing" | "login" | "register"
 
 export default function App() {
@@ -25,15 +25,6 @@ export default function App() {
 
   const totalIncome = transactions
     .filter((t: Transaction) => t.type === "income")
-    .reduce((sum: number, t: Transaction) => sum + t.amount, 0);
-
-  const totalBudget = budgetCategories.reduce(
-    (sum:any, bc:any) => sum + totalIncome * (bc.percentage / 100),
-    0
-  );
-
-  const totalSpent = transactions
-    .filter((t: Transaction) => t.type === "expense")
     .reduce((sum: number, t: Transaction) => sum + t.amount, 0);
 
   const handleLogout = () => {
@@ -58,11 +49,18 @@ export default function App() {
           <>
             <Balance />
             <Summary />
-            <div className="flex flex-col md:flex-row items-center gap-4 mb-6">
+            <div className="mb-6">
               <AddTransaction />
-              <BudgetRing budget={totalBudget} spent={totalSpent} />
             </div>
-            <AddBudget/>
+            {budgets && budgets.length > 0 ? (
+              <BudgetOverview
+                budgetCategories={budgetCategories}
+                transactions={transactions}
+                totalIncome={totalIncome}
+              />
+            ) : (
+              <AddBudget />
+            )}
             <TransactionList />
           </>
         ) : authView === "landing" ? (

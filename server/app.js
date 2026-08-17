@@ -83,8 +83,9 @@ catch(err){res.status(500).json({error:err.message})}
 })
 app.put('/budget/:id', authMiddleware, async (req, res)=>{
     try{
-   const updatedBudget=await Budget.findOneAndUpdate({_id:req.params.id, user:req.user.id},
-    {percentage:req.body.percentage, category:req.body.category}, {new:true})
+   const updatedBudget=await Budget.findOneAndUpdate({'budgets._id':req.params.id, user:req.user.id},
+    {$set: {'budgets.$.category':req.body.category, 'budgets.$.percentage':req.body.percentage}},
+     {new:true})
    if(!updatedBudget){return res.status(404).send("Budget not found")}
    res.json(updatedBudget)
     }
@@ -94,8 +95,9 @@ catch(err){
 })
 app.delete('/budget', authMiddleware, async (req, res)=>{
     try{ 
-        const deleteBudget=await User.findOneAndDelete({user:req.user.id})
-        res.status(200).send("Budgetdeleted")
+        const deleteBudget=await Budget.findOneAndDelete({user:req.user.id})
+        if(!deleteBudget)return res.status(404).json({message:"Budget not found"})
+        res.status(200).json({message:"Budget deleted"})
     }
     catch(err){
     res.status(500).json({error: err.message});
