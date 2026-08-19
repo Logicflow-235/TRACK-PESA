@@ -6,7 +6,7 @@ Designed to help me — and other people like me — who have a money problem. T
 
 ## About
 
-Track Pesa started as a way to solve a real problem: keeping tabs on personal spending. It's also doubled as a hands-on sandbox for learning backend development, kept deliberately separate from other production work so it's safe to experiment in.
+Track Pesa started as a way to solve a real problem: keeping tabs on personal spending. It's also doubled as a hands-on sandbox for practicing backend development, kept deliberately separate from other production work so it's safe to experiment in.
 
 ## Tech Stack
 
@@ -84,4 +84,4 @@ npm start
 
 ## License
 
-This project is for personal/learning purposes.
+This project is open source and available under the MIT License.
