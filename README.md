@@ -1,72 +1,87 @@
-# 💰 Track Pesa
+# Track Pesa
 
-A personal finance tracking web app built for the Kenyan market. Track your income and expenses, monitor your balance, and gain clarity on your spending habits.
+Designed to help me — and other people like me — who have a money problem. Track Pesa is a personal finance tracker built with a Kenyan market focus, so you can track income, expenses, and category budgets all in one place.
 
-## 🌐 Live Demo
-[Track Pesa](https://track-pesa.vercel.app/)
+**Live app:** https://track-pesa.vercel.app/
 
-## ✨ Features
+## About
 
-- Add and delete income & expense transactions
-- Real-time balance calculation
-- Income vs expense summary
-- Filter transactions by category
-- Clean, modern dark UI
+Track Pesa started as a way to solve a real problem: keeping tabs on personal spending. It's also doubled as a hands-on sandbox for learning backend development, kept deliberately separate from other production work so it's safe to experiment in.
 
-## 🛠️ Tech Stack
+## Tech Stack
 
-- **React** — UI library
-- **TypeScript** — type-safe codebase
-- **Redux Toolkit** — global state management
-- **Tailwind CSS** — styling
-- **Vite** — build tool
+**Frontend**
+- React + TypeScript
+- Redux Toolkit (RTK Query for API calls)
+- Deployed on Vercel
 
-## 📦 Getting Started
+**Backend**
+- Node.js + Express
+- MongoDB Atlas + Mongoose
+- JWT authentication
+- Deployed on Render
+
+## Features
+
+- User registration and login with JWT-based auth (multi-user data isolation)
+- Auto-login after registration
+- Add, view, and delete transactions
+- Full CRUD backed by MongoDB
+- Logout support, with UI gated behind login state
+- Dark/green themed UI, including a landing screen with Login/Create Account options
+- Per-category budgets — allocate a percentage of total income to each spending category (percentages must total 100%)
+
+## Project Status
+
+Core flow (register → login → add transaction → view → delete) is complete and tested end-to-end against the live backend. TypeScript typing has been tightened throughout, and the app is fully deployed.
+
+## Getting Started
+
+### Prerequisites
+- Node.js
+- npm or yarn
+- A MongoDB Atlas connection string
+
+### Installation
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/track-pesa.git
+# Clone the repo
+git clone <repo-url>
 cd track-pesa
+
+# Install frontend dependencies
+cd client
 npm install
-npm run dev
+
+# Install backend dependencies
+cd ../server
+npm install
 ```
 
-## 📁 Project Structure
-src/
+### Environment Variables
 
-├── app/
+Create a `.env` file in the `server` directory with:
 
-│   ├── store.ts         # Redux store
+```
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+PORT=5000
+```
 
-│   └── hooks.ts         # Typed Redux hooks
+> **Note:** Never commit your `.env` file. Make sure it's listed in `.gitignore`.
 
-├── features/
+### Running Locally
 
-│   └── transactions/
+```bash
+# Start the backend
+cd server
+npm run dev
 
-│       └── transactionSlice.ts
+# Start the frontend
+cd client
+npm start
+```
 
-├── components/
+## License
 
-│   ├── Balance.tsx
-
-│   ├── Summary.tsx
-
-│   ├── AddTransaction.tsx
-
-│   └── TransactionList.tsx
-
-└── types/
-
-└── index.ts
-
-## 🔮 Roadmap
-
-- [ ] M-Pesa transaction import
-- [ ] Backend integration with Node.js & MongoDB
-- [ ] Monthly spending reports
-- [ ] Data export to PDF
-
-## 👩‍💻 Author
-
-**Theuri Linet**
-[GitHub](https://github.com/Logicflow-235) • [Portfolio](https://my-portfolio-tau-ten-18.vercel.app)
+This project is for personal/learning purposes.
